@@ -1,0 +1,22 @@
+version: '3.5'
+
+services:
+  es:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.8.0
+    restart: always
+    ports:
+      - 9200:9200
+      - 9300:9300
+    environment:
+      - discovery.type=single-node
+      - transport.host=_site_
+      - transport.ping_schedule=-1
+      - transport.tcp.connect_timeout=30s
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    volumes:
+      - es-storage:/usr/share/elasticsearch/data
+      - ./elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+
+volumes:
+  es-storage:
+    driver: local
